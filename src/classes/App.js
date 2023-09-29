@@ -13,7 +13,6 @@ export default class App {
     constructor () {
         this.dom = {};
         this.scene = null;
-        //pixiApp = null;
     }
 
     init () {
@@ -59,8 +58,7 @@ export default class App {
         this.scene = new this.taskArr[e.target.id]();
     }
 
-
-    onResize () {
-        pixiApp.renderer.resize(window.innerWidth, window.innerHeight);
-    }
+    // onResize () {
+    //     pixiApp.renderer.resize(window.innerWidth, window.innerHeight);
+    // }
 }
