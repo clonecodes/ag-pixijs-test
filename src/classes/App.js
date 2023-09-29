@@ -1,65 +1,66 @@
 import * as PIXI from 'pixi.js';
 import { addStats } from 'pixi-stats';
-import { gsap } from "gsap";
+import Button from "./Button";
+import Stack from "./Stack";
+import SmartText from "./SmartText";
+import Fire from "./Fire";
+
+export let pixiApp;
+const startFrom = 0;
 
 export default class App {
 
     constructor () {
         this.dom = {};
-
-        // pixi
-        this.pixi = null;
-        this.stage = null;
         this.scene = null;
+        //pixiApp = null;
     }
 
     init () {
         this.dom.app = document.getElementById('app');
-
         this.setupScene();
-
-        this.initComplete();
-    }
-
-    initComplete () {
-        this.pixi.ticker.add(this.pixiUpdate.bind(this));
     }
 
     setupScene () {
-        this.pixi = new PIXI.Application({
-            // width: document.body.width,
-            // height: document.body.height,
+        pixiApp = new PIXI.Application({
             antialias: true,
             backgroundAlpha: 1,
             resolution: 1, //window.devicePixelRatio,
             backgroundColor: "#151515",
             resizeTo: window,
             sharedTicker: true,
-            //interactive: true,
         });
-        this.dom.app.appendChild(this.pixi.view);
-        const stats = addStats(document, this.pixi);
+        this.dom.app.appendChild(pixiApp.view);
+        // add FPS counter
+        const stats = addStats(document, pixiApp);
         const ticker = PIXI.Ticker.shared;
         ticker.add(stats.update, stats, PIXI.UPDATE_PRIORITY.UTILITY);
-
-        this.stage = this.pixi.stage;
-
-        this.scene = new PIXI.Container();
-        this.pixi.stage.addChild(this.scene);
-
-        const sprite = PIXI.Sprite.from(PIXI.Texture.WHITE);
-        sprite.tint = 0x00ff1f;
-        gsap.to(sprite, {duration: 1, y: this.pixi.renderer.screen.height * 0.5, x: this.pixi.renderer.screen.width * 0.5});
-
-        this.scene.addChild(sprite);
-
+        // load external asset
+        const loader = PIXI.Loader.shared;
+        loader.add('logo', './assets/ancient.png')
+        loader.onComplete.add(this.onLoadComplete);
+        loader.load();
+        // add task switching buttons
+        this.btnArr = ['T1', 'T2', 'T3'].map((l,i) => new Button(l, i).on('pointerdown', this.onBtnDown));
+        this.taskArr = [Stack, SmartText, Fire];
     }
 
-    pixiUpdate () {
-        this.pixi.renderer.render(this.stage);
+    onLoadComplete = () => {
+        console.log('onLoadComplete')
+        this.scene = new this.taskArr[startFrom]();
+        this.btnArr[startFrom].disable();
     }
+
+    onBtnDown = (e) => {
+        console.log('onBtnDown', e.target.id)
+        this.scene.clear();
+        this.btnArr.forEach(b => b.enable());
+        e.target.disable();
+        this.scene = new this.taskArr[e.target.id]();
+    }
+
 
     onResize () {
-        this.pixi.renderer.resize(window.innerWidth, window.innerHeight);
+        pixiApp.renderer.resize(window.innerWidth, window.innerHeight);
     }
 }
