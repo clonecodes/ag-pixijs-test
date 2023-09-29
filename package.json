@@ -10,6 +10,7 @@
     "vite": "^2.1.0"
   },
   "dependencies": {
+    "@pixi/particle-emitter": "^5.0.8",
     "gsap": "^3.12.2",
     "pixi-stats": "^1.2.2",
     "pixi.js": "^6.3.2"

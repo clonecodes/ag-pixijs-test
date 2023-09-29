@@ -6,7 +6,7 @@ import SmartText from "./SmartText";
 import Fire from "./Fire";
 
 export let pixiApp;
-const startFrom = 1;
+const startFrom = 2;
 
 export default class App {
 
@@ -25,7 +25,7 @@ export default class App {
             antialias: true,
             backgroundAlpha: 1,
             resolution: 1, //window.devicePixelRatio,
-            backgroundColor: "#151515",
+            backgroundColor: '0x999999',
             resizeTo: window,
             sharedTicker: true,
         });
@@ -37,6 +37,8 @@ export default class App {
         // load external asset
         const loader = PIXI.Loader.shared;
         loader.add('img', './assets/img.json')
+        loader.add('fire', './assets/Fire.png')
+        loader.add('fire1', './assets/Fire1.png')
         loader.onComplete.add(this.onLoadComplete);
         loader.load();
         // add task switching buttons
