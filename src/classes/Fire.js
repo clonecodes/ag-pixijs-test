@@ -7,8 +7,8 @@ export default class Fire extends PIXI.Container {
 
   constructor () {
     super();
-    this.init();
-    console.log('fire')
+    // this.init();
+    // console.log('fire')
   }
 
   init () {

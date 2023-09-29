@@ -6,7 +6,7 @@ import SmartText from "./SmartText";
 import Fire from "./Fire";
 
 export let pixiApp;
-const startFrom = 0;
+const startFrom = 1;
 
 export default class App {
 
@@ -36,7 +36,7 @@ export default class App {
         ticker.add(stats.update, stats, PIXI.UPDATE_PRIORITY.UTILITY);
         // load external asset
         const loader = PIXI.Loader.shared;
-        loader.add('logo', './assets/ancient.png')
+        loader.add('img', './assets/img.json')
         loader.onComplete.add(this.onLoadComplete);
         loader.load();
         // add task switching buttons
@@ -47,6 +47,7 @@ export default class App {
     onLoadComplete = () => {
         console.log('onLoadComplete')
         this.scene = new this.taskArr[startFrom]();
+        this.scene.init();
         this.btnArr[startFrom].disable();
     }
 
@@ -56,6 +57,7 @@ export default class App {
         this.btnArr.forEach(b => b.enable());
         e.target.disable();
         this.scene = new this.taskArr[e.target.id]();
+        this.scene.init();
     }
 
     // onResize () {

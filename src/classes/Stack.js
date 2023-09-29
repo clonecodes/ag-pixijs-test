@@ -16,8 +16,7 @@ export default class Stack extends PIXI.Container {
   constructor () {
     super();
     //this.spriteArr = [];
-    this.init();
-    console.log('stack')
+    //this.init();
   }
 
   init () {
